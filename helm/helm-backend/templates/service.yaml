@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: {{ .Values.namespace }}
+spec:
+  # ClusterIP service for internal cluster communication
+  type: ClusterIP
+  selector:
+    app: backend
+  ports:
+  - port: 5000
+    targetPort: 5000

@@ -1,0 +1,7 @@
+# General configuration for Redis
+namespace: redis-ns
+image: redis:7.0-alpine
+replicaCount: 1
+
+# Port configuration
+port: 6379

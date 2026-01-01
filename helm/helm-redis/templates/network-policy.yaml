@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-policy
+  namespace: {{ .Values.namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: redis
+  policyTypes:
+  - Ingress
+  # Only allow traffic from the backend-ns namespace
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: backend-ns

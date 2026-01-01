@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+    <h2>Login / Signup</h2>
+    <input type="text" id="username" placeholder="Enter Name"><br><br>
+    <input type="text" id="phone" placeholder="Enter Phone Number"><br><br>
+    <button onclick="submitData()">Submit</button>
+    <p id="response"></p>
+
+    <script>
+        async function submitData() {
+            const username = document.getElementById('username').value;
+            const phone = document.getElementById('phone').value;
+            
+            // Note: In Production, this URL will be your Ingress/Backend service
+            const response = await fetch('/check-user', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, phone})
+            });
+            const result = await response.json();
+            document.getElementById('response').innerText = result.message;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Namespace for the frontend
+namespace: frontend-ns
+
+# Docker Image details
+image:
+  repository: nabilaebrahim/private-repo
+  tag: frontend
+  pullPolicy: Always 
+
+# Replicas
+replicaCount: 2
+
+# Domain name for Ingress access
+host: helm-storm.local
+
+# Backend FQDN
+backendUrl: "https://helm-storm.local/check-user"
+
+backendNamespaceLabel: backend-ns

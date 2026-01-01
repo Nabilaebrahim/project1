@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: {{ .Values.namespace }}
+data:
+  # This tells the frontend where the backend is located
+  BACKEND_API_URL: {{ .Values.backendUrl }}

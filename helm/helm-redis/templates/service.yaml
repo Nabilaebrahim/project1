@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: {{ .Values.namespace }}
+spec:
+  # Headless service for direct pod addressability
+  clusterIP: None
+  selector:
+    app: redis
+  ports:
+  - port: {{ .Values.port }}
+    targetPort: {{ .Values.port }}

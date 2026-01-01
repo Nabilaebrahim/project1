@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-network-policy
+  namespace: {{ .Values.namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: postgres
+  policyTypes:
+  - Ingress
+  # Restrict ingress traffic to only backend-ns
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: backend-ns

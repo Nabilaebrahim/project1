@@ -1,0 +1,41 @@
+# General database settings
+namespace: db-ns
+image: postgres:15
+
+# Storage settings
+
+storageClassName: "my-custom-db-storage" 
+storageSize: "1Gi"
+
+# # DB initialization values
+# dbName: "mydb"
+# dbUser: "admin"
+
+
+# dbName: "mydb"
+# dbUser: "admin"
+# dbPassword: "password123"
+
+# resources:
+#   requests:
+#     cpu: "20m"
+#     memory: "64Mi"
+#   limits:
+#     cpu: "50m"
+#     memory: "128Mi" 
+
+
+namespace: db-ns
+image: postgres:15
+storageClassName: "my-custom-db-storage"
+storageSize: "1Gi"
+dbName: "mydb"
+dbUser: "admin"
+dbPassword: "password123"
+resources:
+  requests:
+    cpu: "20m"
+    memory: "64Mi"
+  limits:
+    cpu: "50m"
+    memory: "128Mi"

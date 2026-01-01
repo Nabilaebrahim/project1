@@ -1,0 +1,30 @@
+# # Namespace for the backend
+# namespace: backend-ns
+
+# # Docker Image from your private repo
+# image:
+#   repository: nabilaebrahim/private-repo
+#   tag: backend
+#   pullPolicy: IfNotPresent
+#   #pullPolicy: Always
+
+# # Scaling configuration
+# replicaCount: 2
+
+# # Internal FQDN addresses for DB and Redis
+# databaseHost: "db-headless.db-ns.svc.cluster.local"
+# redisHost: "redis-service.redis-ns.svc.cluster.local"
+
+namespace: backend-ns
+image:
+  repository: nabilaebrahim/private-repo
+  tag: backend
+replicaCount: 2
+databaseHost: "db-headless.db-ns.svc.cluster.local"
+redisHost: "redis-service.redis-ns.svc.cluster.local"
+dbUser: "admin"
+dbName: "mydb"
+dbPassword: "password123"
+
+
+

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+  DB_USER: {{ .Values.dbUser | quote }}
+  DB_NAME: {{ .Values.dbName | quote }}
+  DB_PASS: {{ .Values.dbPassword | quote }}
+  DB_HOST: {{ .Values.databaseHost | quote }}
+  REDIS_HOST: {{ .Values.redisHost | quote }}
+  
