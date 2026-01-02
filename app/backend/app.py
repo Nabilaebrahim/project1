@@ -5,7 +5,7 @@ from psycopg2 import pool
 import redis
 import os
 import logging
-import atexit # إضافة عشان نقفل الـ pool صح
+import atexit 
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ DB_USER = os.getenv('DB_USER', 'user')
 DB_PASS = os.getenv('DB_PASS') 
 REDIS_HOST = os.getenv('REDIS_HOST', 'redis-service')
 
-# إعداد الـ Pool كـ متغير Global عشان السونار يطمن لإدارة الموارد
+
 db_pool = None
 
 def init_db():
@@ -34,7 +34,7 @@ def init_db():
 
 init_db()
 
-# إغلاق الـ pool عند قفل البرنامج (لحل مشكلة الـ Reliability في السونار)
+
 @atexit.register
 def close_db_pool():
     if db_pool:
@@ -52,7 +52,7 @@ def check_user():
 
     conn = None
     try:
-        # استخدام Redis بـ Timeout عشان السونار ميعتبرهاش ثغرة أداء
+        
         cache = redis.Redis(host=REDIS_HOST, port=6379, decode_responses=True, socket_timeout=5)
         
         cached_phone = cache.get(username)
@@ -84,5 +84,5 @@ def check_user():
             db_pool.putconn(conn)
 
 if __name__ == '__main__':
-    # تأكدي إن مفيش أي باسوورد مكتوب هنا حتى في الكومنتس
+    
     app.run(host='127.0.0.1', port=5000, debug=False)
