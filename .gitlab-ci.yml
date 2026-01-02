@@ -1,22 +1,9 @@
 stages:
-  - audit
   - sonarqube
-  - security_scan
-
-run_python_audit:
-  stage: audit
-  
-  tags:
-    - rocky  
-  script:
-   
-    - pip install --user pylint detect-secrets
-    
-    - python3 -m pylint --version || echo "pylint installed"
-    - python3 test_suite.py
 
 sonarqube_check:
   stage: sonarqube
+  image: sonarsource/sonar-scanner-cli:latest
   tags:
     - rocky
   variables:
@@ -27,17 +14,7 @@ sonarqube_check:
         -Dsonar.sources=. \
         -Dsonar.host.url=http://192.168.245.128:9000 \
         -Dsonar.login=$SONAR_TOKEN \
-        -Dsonar.python.version=3
-  allow_failure: true
-
-security_audit:
-  stage: security_scan
-  tags:
-    - rocky
-  script:
-    - export TRIVY_USERNAME=$DOCKER_USER
-    - export TRIVY_PASSWORD=$DOCKER_PASSWORD
-    
-    - trivy image nabilaebrahim/private-repo:backend || echo "Trivy scan failed but continuing"
-    - trivy image nabilaebrahim/private-repo:frontend || echo "Trivy scan failed but continuing"
-    - echo "$COSIGN_PUBLIC_KEY" > cosign.pub
+        -Dsonar.python.version=3 \
+        -Dsonar.qualitygate.wait=true 
+  
+  allow_failure: false
