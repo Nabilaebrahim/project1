@@ -2,4 +2,4 @@ apiVersion: v2
 name: helm-db
 description: Database chart using StatefulSet and Persistent Storage
 version: 0.1.0
-appVersion: "15"
+appVersion: "15" 

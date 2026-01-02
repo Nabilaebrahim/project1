@@ -5,4 +5,4 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   POSTGRES_DB: {{ .Values.dbName }}
-  POSTGRES_USER: {{ .Values.dbUser }}
+  POSTGRES_USER: {{ .Values.dbUser }} 

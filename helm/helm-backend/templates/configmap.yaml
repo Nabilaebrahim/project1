@@ -8,4 +8,4 @@ data:
   DB_NAME: {{ .Values.dbName | quote }}
   DB_PASS: {{ .Values.dbPassword | quote }}
   DB_HOST: {{ .Values.databaseHost | quote }}
-  REDIS_HOST: {{ .Values.redisHost | quote }}
+  REDIS_HOST: {{ .Values.redisHost | quote }} 

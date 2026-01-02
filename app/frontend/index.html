@@ -17,6 +17,7 @@
             
             // Note: In Production, this URL will be your Ingress/Backend service
             const response = await fetch('/check-user', {
+               
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({username, phone})

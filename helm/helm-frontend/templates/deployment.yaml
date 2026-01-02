@@ -9,7 +9,7 @@ spec:
   validationFailureAction: Enforce
   background: false
   rules:
-    - name: verify-signature
+    - name: verify-signature 
       match:
         any:
         - resources:

@@ -11,4 +11,4 @@ spec:
   storageClassName: {{ .Values.storageClassName }}
   hostPath:
     path: {{ .Values.hostPath }}
-    type: DirectoryOrCreate
+    type: DirectoryOrCreate 

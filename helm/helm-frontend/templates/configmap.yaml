@@ -5,4 +5,4 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   # This tells the frontend where the backend is located
-  BACKEND_API_URL: {{ .Values.backendUrl }}
+  BACKEND_API_URL: {{ .Values.backendUrl }} 

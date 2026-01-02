@@ -4,4 +4,4 @@ metadata:
   name: {{ .Values.storageClassName }}
 # Use local-storage or provider specific provisioner
 provisioner: k8s.io/minikube-hostpath 
-volumeBindingMode: Immediate
+volumeBindingMode: Immediate 
