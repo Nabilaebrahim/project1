@@ -3,12 +3,15 @@ stages:
 
 sonarqube_check:
   stage: sonarqube
-  image: sonarsource/sonar-scanner-cli:latest
   tags:
     - rocky
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   script:
+   
+    - pip install sonar-scanner-cli
+    
+    
     - sonar-scanner \
         -Dsonar.projectKey=project1 \
         -Dsonar.sources=. \
@@ -16,5 +19,6 @@ sonarqube_check:
         -Dsonar.login=$SONAR_TOKEN \
         -Dsonar.python.version=3 \
         -Dsonar.qualitygate.wait=true 
+        
   
   allow_failure: false
