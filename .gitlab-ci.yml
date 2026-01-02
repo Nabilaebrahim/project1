@@ -27,6 +27,7 @@ lint_python:
   allow_failure: false
 
 
+
 sonarqube_check:
   stage: sonarqube
   tags:
