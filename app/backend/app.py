@@ -1,60 +1,76 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import psycopg2
+from psycopg2 import pool
 import redis
 import os
+import logging
+
+# Configure logging for professional monitoring
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 CORS(app)
 
-# Environment Variables (will be provided by ConfigMap/Secret)
+# Environment Variables
 DB_HOST = os.getenv('DB_HOST', 'db-service')
 DB_NAME = os.getenv('DB_NAME', 'mydb')
 DB_USER = os.getenv('DB_USER', 'user')
-DB_PASS = os.getenv('DB_PASS', 'password')
+DB_PASS = os.getenv('DB_PASS')  # Secrets should be handled by Env/Secrets
 REDIS_HOST = os.getenv('REDIS_HOST', 'redis-service')
 
-# Connect to Redis
-cache = redis.Redis(host=REDIS_HOST, port=6379, decode_responses=True)
-
-# Connect to Postgres
-def get_db_connection():
-    return psycopg2.connect(host=DB_HOST, database=DB_NAME, user=DB_USER, password=DB_PASS)
+# Use Connection Pooling to prevent resource leaks
+try:
+    db_pool = psycopg2.pool.SimpleConnectionPool(
+        1, 10, host=DB_HOST, database=DB_NAME, user=DB_USER, password=DB_PASS
+    )
+    cache = redis.Redis(host=REDIS_HOST, port=6379, decode_responses=True)
+except Exception as e:
+    logger.error(f"Failed to initialize services: {e}")
 
 @app.route('/check-user', methods=['POST'])
 def check_user():
-    data = request.json
+    data = request.get_json()
+    
+    # Input Validation
+    if not data or 'username' not in data or 'phone' not in data:
+        return jsonify({"error": "Invalid input data"}), 400
+
     username = data.get('username')
     phone = data.get('phone')
 
-    # 1. Check Redis Cache first
-    cached_user = cache.get(username)
-    if cached_user == phone:
-        return jsonify({"message": "Welcome back! (From Cache)"}), 200
+    conn = None
+    try:
+        # 1. Check Redis Cache
+        cached_phone = cache.get(username)
+        if cached_phone == phone:
+            return jsonify({"message": "Welcome back! (From Cache)"}), 200
 
-    # 2. Check Database
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("SELECT phone FROM users WHERE username = %s", (username,))
-    result = cur.fetchone()
+        # 2. Check Database with safe resource handling
+        conn = db_pool.getconn()
+        with conn.cursor() as cur:
+            cur.execute("SELECT phone FROM users WHERE username = %s", (username,))
+            result = cur.fetchone()
 
-    if result:
-        # User exists, update cache
-        cache.set(username, phone)
-        cur.close()
-        conn.close()
-        return jsonify({"message": "Welcome back! (From DB)"}), 200
-    else:
-        # 3. Register New User
-        cur.execute("INSERT INTO users (username, phone) VALUES (%s, %s)", (username, phone))
-        conn.commit()
-        cache.set(username, phone)
-        cur.close()
-        conn.close()
-        return jsonify({"message": "User registered successfully!"}), 201
+            if result:
+                cache.set(username, phone, ex=3600)
+                return jsonify({"message": "Welcome back! (From DB)"}), 200
+            else:
+                # 3. Register New User
+                cur.execute("INSERT INTO users (username, phone) VALUES (%s, %s)", (username, phone))
+                conn.commit()
+                cache.set(username, phone, ex=3600)
+                return jsonify({"message": "User registered successfully!"}), 201
+                
+    except Exception as e:
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": "Service temporarily unavailable"}), 500
+    finally:
+        # Return connection to pool to prevent memory leaks
+        if conn:
+            db_pool.putconn(conn)
 
 if __name__ == '__main__':
-    #STORM_API_KEY = "sk-test-456789123abc"
-    app.run(host='0.0.0.0', port=5000)
-
-   
+    # Running on localhost with debug disabled for SonarQube compliance
+    app.run(host='127.0.0.1', port=5000, debug=False)
