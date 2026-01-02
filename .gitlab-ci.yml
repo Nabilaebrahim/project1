@@ -1,0 +1,47 @@
+stages:
+  - audit
+  - sonarqube
+  - security_scan
+
+
+run_python_audit:
+  stage: audit
+  image: python:3.9
+  tags:
+    - rocky  
+  script:
+    - pip install pylint detect-secrets
+    - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    - python3 test_suite.py
+
+
+sonarqube_check:
+  stage: sonarqube
+  image: sonarsource/sonar-scanner-cli:latest
+  tags:
+    - rocky
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+  script:
+    - sonar-scanner \
+        -Dsonar.projectKey=project1 \
+        -Dsonar.sources=. \
+        -Dsonar.host.url=http://192.168.245.128:9000 \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.python.version=3
+  allow_failure: true
+
+
+security_audit:
+  stage: security_scan
+  image: 
+    name: aquasec/trivy:latest
+    entrypoint: [""]
+  tags:
+    - rocky
+  script:
+    - export TRIVY_USERNAME=$DOCKER_USER
+    - export TRIVY_PASSWORD=$DOCKER_PASSWORD
+    - trivy image nabilaebrahim/private-repo:backend
+    - trivy image nabilaebrahim/private-repo:frontend
+    - echo "$COSIGN_PUBLIC_KEY" > cosign.pub
