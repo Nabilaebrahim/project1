@@ -11,7 +11,7 @@ run_python_audit:
     - rocky  
   script:
     - pip install pylint detect-secrets
-    - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+   # - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
     - python3 test_suite.py
 
 
