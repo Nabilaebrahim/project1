@@ -54,7 +54,7 @@ def check_user():
         return jsonify({"message": "User registered successfully!"}), 201
 
 if __name__ == '__main__':
-    STORM_API_KEY = "sk-test-456789123abc"
+    #STORM_API_KEY = "sk-test-456789123abc"
     app.run(host='0.0.0.0', port=5000)
 
    
