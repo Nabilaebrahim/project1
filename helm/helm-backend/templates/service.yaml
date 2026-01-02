@@ -4,7 +4,6 @@ metadata:
   name: backend-service
   namespace: {{ .Values.namespace }}
 spec:
-  # ClusterIP service for internal cluster communication
   type: ClusterIP
   selector:
     app: backend

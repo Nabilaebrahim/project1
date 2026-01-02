@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: {{ .Values.namespace }}
   labels:
-    name: {{ .Values.namespace }} # Essential for NetworkPolicy selection
+    name: {{ .Values.namespace }}

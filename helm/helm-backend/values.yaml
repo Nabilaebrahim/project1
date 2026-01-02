@@ -1,30 +1,48 @@
-# # Namespace for the backend
-# namespace: backend-ns
-
-# # Docker Image from your private repo
-# image:
-#   repository: nabilaebrahim/private-repo
-#   tag: backend
-#   pullPolicy: IfNotPresent
-#   #pullPolicy: Always
-
-# # Scaling configuration
-# replicaCount: 2
-
-# # Internal FQDN addresses for DB and Redis
-# databaseHost: "db-headless.db-ns.svc.cluster.local"
-# redisHost: "redis-service.redis-ns.svc.cluster.local"
-
+# Global Configuration
 namespace: backend-ns
+
+# Deployment Configuration
+replicaCount: 2
+
 image:
   repository: nabilaebrahim/private-repo
   tag: backend
-replicaCount: 2
+  pullPolicy: IfNotPresent
+
+# Application Database & Redis Connections
 databaseHost: "db-headless.db-ns.svc.cluster.local"
 redisHost: "redis-service.redis-ns.svc.cluster.local"
 dbUser: "admin"
 dbName: "mydb"
 dbPassword: "password123"
 
+# Resource Quota & Limits
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
 
+quota:
+  pods: "10"
+  requestsCpu: "1"
+  requestsMemory: "1Gi"
+  limitsCpu: "2"
+  limitsMemory: "2Gi"
 
+# HPA Configuration
+hpa:
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPU: 60
+
+# HPA Configuration
+hpa:
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPU: 60
+  targetMemory: 80 
+
+  

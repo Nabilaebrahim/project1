@@ -10,19 +10,41 @@ spec:
       app: backend
   template:
     metadata:
-    
       annotations:
-        
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-      # ------------------------
       labels:
         app: backend
     spec:
       imagePullSecrets:
       - name: regcred
+      initContainers:
+      - name: init-db
+        image: postgres:15
+        env:
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: password
+        command:
+        - sh
+        - -c
+        - |
+          until psql -h {{ .Values.databaseHost }} -U {{ .Values.dbUser }} -d {{ .Values.dbName }} -c "SELECT 1"; do
+            echo "Waiting for database..."
+            sleep 2
+          done
+          psql -h {{ .Values.databaseHost }} -U {{ .Values.dbUser }} -d {{ .Values.dbName }} -c "
+          CREATE TABLE IF NOT EXISTS users (
+              id SERIAL PRIMARY KEY,
+              username VARCHAR(50) UNIQUE NOT NULL,
+              phone VARCHAR(20) NOT NULL
+          );
+          INSERT INTO users (username, phone) VALUES ('nabila_professor', '0987654321') ON CONFLICT DO NOTHING;"
       containers:
       - name: backend
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 5000
         envFrom:
@@ -30,8 +52,8 @@ spec:
             name: backend-config
         resources:
           requests:
-            memory: "128Mi"
-            cpu: "100m"
+            memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
           limits:
-            memory: "256Mi"
-            cpu: "200m"
+            memory: {{ .Values.resources.limits.memory }}
+            cpu: {{ .Values.resources.limits.cpu }}

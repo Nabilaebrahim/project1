@@ -17,3 +17,11 @@ host: helm-storm.local
 backendUrl: "https://helm-storm.local/check-user"
 
 backendNamespaceLabel: backend-ns
+
+# Frontend Specific Configuration
+frontend:
+  hpa:
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPU: 50
+    targetMemory: 70  

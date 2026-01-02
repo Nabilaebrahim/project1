@@ -9,7 +9,6 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: {{ .Values.storageClassName }}
- 
   hostPath:
-    path: /data/db-storage
+    path: {{ .Values.hostPath }}
     type: DirectoryOrCreate
