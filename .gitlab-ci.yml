@@ -11,23 +11,22 @@
 #     - sonar-scanner -Dsonar.projectKey=project1 -Dsonar.sources=. -Dsonar.host.url=http://192.168.245.128:9000 -Dsonar.login=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
 #   allow_failure: false
 
+
 stages:
   - lint_and_syntax
   - sonarqube
 
-# Stage 1: Check Python Syntax and Coding Standards
 lint_python:
   stage: lint_and_syntax
   tags:
     - rocky
   script:
-    - pip3 install --user flake8  # Install flake8 for the current user
-    - export PATH=$PATH:~/.local/bin  # Add local bin to PATH so bash can find flake8
-    - python3 -m py_compile app/backend/app.py  # Check for Python syntax errors
-    - flake8 app/backend/app.py --count --select=E9,F63,F7,F82 --show-source --statistics # Run the linter
+    - pip3 install --user flake8
+    - export PATH=$PATH:~/.local/bin
+    - python3 -m py_compile app/backend/app.py
+    - flake8 app/backend/app.py --count --select=E9,F63,F7,F82 --show-source --statistics
   allow_failure: false
 
-# Stage 2: Analyze Code Quality and Security with SonarQube
 sonarqube_check:
   stage: sonarqube
   tags:
@@ -35,10 +34,5 @@ sonarqube_check:
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   script:
-    - sonar-scanner \
-      -Dsonar.projectKey=project1 \
-      -Dsonar.sources=. \
-      -Dsonar.host.url=http://192.168.245.128:9000 \
-      -Dsonar.login=$SONAR_TOKEN \
-      -Dsonar.qualitygate.wait=true # Wait for SonarQube to return Pass/Fail
+    - sonar-scanner -Dsonar.projectKey=project1 -Dsonar.sources=. -Dsonar.host.url=http://192.168.245.128:9000 -Dsonar.login=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
   allow_failure: false
