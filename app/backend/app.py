@@ -54,6 +54,7 @@ def check_user():
         return jsonify({"message": "User registered successfully!"}), 201
 
 if __name__ == '__main__':
+    testing_security_vulnerability = "admin123"
     app.run(host='0.0.0.0', port=5000)
 
-    db_pass = "admin123"
+   
