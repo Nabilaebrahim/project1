@@ -34,5 +34,7 @@ sonarqube_check:
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   script:
+   
+    - export PATH=$PATH:/opt/sonar-scanner/bin
     - sonar-scanner -Dsonar.projectKey=project1 -Dsonar.sources=. -Dsonar.host.url=http://192.168.245.128:9000 -Dsonar.login=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
   allow_failure: false
