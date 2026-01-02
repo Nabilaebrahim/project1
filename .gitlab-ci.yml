@@ -1,5 +1,31 @@
+# stages:
+#   - sonarqube
+
+# sonarqube_check:
+#   stage: sonarqube
+#   tags:
+#     - rocky
+#   variables:
+#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+#   script:
+#     - sonar-scanner -Dsonar.projectKey=project1 -Dsonar.sources=. -Dsonar.host.url=http://192.168.245.128:9000 -Dsonar.login=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
+#   allow_failure: false
+
 stages:
+  - lint_and_syntax
   - sonarqube
+
+
+lint_python:
+  stage: lint_and_syntax
+  tags:
+    - rocky
+  script:
+    - pip install flake8  
+    - python3 -m py_compile app/backend/app.py 
+    - flake8 app/backend/app.py --count --select=E9,F63,F7,F82 --show-source --statistics  
+  allow_failure: false
+
 
 sonarqube_check:
   stage: sonarqube
@@ -8,5 +34,10 @@ sonarqube_check:
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   script:
-    - sonar-scanner -Dsonar.projectKey=project1 -Dsonar.sources=. -Dsonar.host.url=http://192.168.245.128:9000 -Dsonar.login=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
+    - sonar-scanner \
+      -Dsonar.projectKey=project1 \
+      -Dsonar.sources=. \
+      -Dsonar.host.url=http://192.168.245.128:9000 \
+      -Dsonar.login=$SONAR_TOKEN \
+      -Dsonar.qualitygate.wait=true
   allow_failure: false
