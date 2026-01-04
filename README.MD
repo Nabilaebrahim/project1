@@ -45,36 +45,52 @@ The goal of this project is to demonstrate how a modern authentication system ca
 
 ## 5. Directory Structure & File Description
 helm-storm/
-├── app/                        # Application Source Code
-│   ├── backend/                # Flask API Logic
-│   │   ├── app.py              # Main authentication logic
-│   │   ├── requirements.txt    # Python dependencies
-│   │   └── Dockerfile          # Backend image build instructions
-│   └── frontend/               # User Interface
-│       ├── index.html          # HTML5 UI
-│       └── Dockerfile          # Nginx frontend image build
-├── helm/                       # Infrastructure as Code (Helm Charts)
-│   ├── helm-backend/           # Chart for the API tier
-│   │   ├── Chart.yaml          # Metadata (v0.1.0)
-│   │   ├── values.yaml         # Config: Replicas, Image tags
-│   │   └── templates/          # K8s Manifests (Deployment, Service)
-│   ├── helm-db/                # Chart for PostgreSQL
+├── app/
+│   ├── backend/
+│   │   ├── app.py
+│   │   ├── requirements.txt
+│   │   └── Dockerfile
+│   └── frontend/
+│       ├── index.html
+│       └── Dockerfile
+│
+├── helm/
+│   ├── helm-backend/
 │   │   ├── Chart.yaml
-│   │   ├── values.yaml         # Config: Storage size, User/Pass
-│   │   └── templates/          # StatefulSet, PVC, Secret
-│   ├── helm-frontend/          # Chart for the UI tier
+│   │   ├── values.yaml
+│   │   └── templates/
+│   │       ├── deployment.yaml
+│   │       └── service.yaml
+│   │
+│   ├── helm-db/
 │   │   ├── Chart.yaml
-│   │   ├── values.yaml         # Config: ServiceType, HPA limits
-│   │   └── templates/          # Deployment, Service, HPA
-│   └── helm-redis/             # Chart for Caching tier
+│   │   ├── values.yaml
+│   │   └── templates/
+│   │       ├── statefulset.yaml
+│   │       ├── pvc.yaml
+│   │       └── secret.yaml
+│   │
+│   ├── helm-frontend/
+│   │   ├── Chart.yaml
+│   │   ├── values.yaml
+│   │   └── templates/
+│   │       ├── deployment.yaml
+│   │       ├── service.yaml
+│   │       └── hpa.yaml
+│   │
+│   └── helm-redis/
 │       ├── Chart.yaml
-│       ├── values.yaml         # Config: Maxmemory, Persistence
-│       └── templates/          # StatefulSet, NetworkPolicy
-├── cosign.pub                  # Public key for image signature verification
-├── install.yaml                # Kyverno Security Engine installation
-├── test_suite.py               # Automated Gatekeeper (Python Audit Script)
-├── docker-compose-sonar.yml    # Local SonarQube & Postgres for auditing
-└── README.md                   # Project Documentation
+│       ├── values.yaml
+│       └── templates/
+│           ├── statefulset.yaml
+│           └── networkpolicy.yaml
+│
+├── cosign.pub
+├── install.yaml
+├── test_suite.py
+├── docker-compose-sonar.yml
+└── README.md
+
 
 
 
