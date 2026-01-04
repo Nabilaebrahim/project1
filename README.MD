@@ -41,13 +41,6 @@ The goal of this project is to demonstrate how a modern authentication system ca
 
 ## 4. Project Architecture
 
-The project is divided into **three main layers**:
-
-1. **Application Layer** – Frontend & Backend logic
-2. **Infrastructure Layer** – Kubernetes & Helm charts
-3. **Security & Quality Layer** – CI/CD, SonarQube, policies
-
-
 <img src="project architecture.jpg" alt="Description" width="1000">
 
 ## 5. Directory Structure & File Description
