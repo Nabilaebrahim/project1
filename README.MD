@@ -44,6 +44,8 @@ The goal of this project is to demonstrate how a modern authentication system ca
 <img src="project architecture.jpg" alt="Description" width="1000">
 
 ## 5. Directory Structure & File Description
+
+```text
 helm-storm/
 ├── app/
 │   ├── backend/
