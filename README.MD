@@ -44,6 +44,41 @@ The goal of this project is to demonstrate how a modern authentication system ca
 <img src="project architecture.jpg" alt="Description" width="1000">
 
 ## 5. Directory Structure & File Description
+helm-storm/
+├── app/                        # Application Source Code
+│   ├── backend/                # Flask API Logic
+│   │   ├── app.py              # Main authentication logic
+│   │   ├── requirements.txt    # Python dependencies
+│   │   └── Dockerfile          # Backend image build instructions
+│   └── frontend/               # User Interface
+│       ├── index.html          # HTML5 UI
+│       └── Dockerfile          # Nginx frontend image build
+├── helm/                       # Infrastructure as Code (Helm Charts)
+│   ├── helm-backend/           # Chart for the API tier
+│   │   ├── Chart.yaml          # Metadata (v0.1.0)
+│   │   ├── values.yaml         # Config: Replicas, Image tags
+│   │   └── templates/          # K8s Manifests (Deployment, Service)
+│   ├── helm-db/                # Chart for PostgreSQL
+│   │   ├── Chart.yaml
+│   │   ├── values.yaml         # Config: Storage size, User/Pass
+│   │   └── templates/          # StatefulSet, PVC, Secret
+│   ├── helm-frontend/          # Chart for the UI tier
+│   │   ├── Chart.yaml
+│   │   ├── values.yaml         # Config: ServiceType, HPA limits
+│   │   └── templates/          # Deployment, Service, HPA
+│   └── helm-redis/             # Chart for Caching tier
+│       ├── Chart.yaml
+│       ├── values.yaml         # Config: Maxmemory, Persistence
+│       └── templates/          # StatefulSet, NetworkPolicy
+├── cosign.pub                  # Public key for image signature verification
+├── install.yaml                # Kyverno Security Engine installation
+├── test_suite.py               # Automated Gatekeeper (Python Audit Script)
+├── docker-compose-sonar.yml    # Local SonarQube & Postgres for auditing
+└── README.md                   # Project Documentation
+
+
+
+
 
 ### Root Directory
 
