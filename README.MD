@@ -272,7 +272,7 @@ git checkout -b feature/new-feature
 
 ## 11. Code Workflow
 
-<img src="Project Workflow.png" alt="Description" width="1000">
+<img src="workflow2.drawio.png" alt="Description" width="1000">
 
 
 
