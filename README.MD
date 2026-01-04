@@ -48,6 +48,8 @@ The project is divided into **three main layers**:
 3. **Security & Quality Layer** – CI/CD, SonarQube, policies
 
 
+./project architecture.jpg
+
 
 ## 5. Directory Structure & File Description
 
