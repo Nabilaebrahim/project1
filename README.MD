@@ -270,6 +270,10 @@ git checkout -b feature/new-feature
 * Pipeline fails if Quality Gate is not **GREEN**
 * Images are verified using **Cosign** before deployment
 
+## 11. Code Workflow
+
+<img src="Project Workflow.svg" alt="Description" width="1000">
+
 
 
 ## 11. Team
